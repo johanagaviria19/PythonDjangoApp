@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "admin_libros/wsgi.py",
+      "src": "admin_libros/admin_libros/wsgi.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
     }
@@ -10,7 +10,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "admin_libros/wsgi.py"
+      "dest": "admin_libros/admin_libros/wsgi.py"
     }
   ]
 }
