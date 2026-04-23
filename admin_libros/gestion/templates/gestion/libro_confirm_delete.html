@@ -1,0 +1,27 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Eliminar Libro | LibroHub{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto p-8 sm:p-12 text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-rose-50 text-rose-600 rounded-full mb-6">
+        <i class="fas fa-book-dead text-3xl"></i>
+    </div>
+    
+    <h1 class="text-2xl font-bold text-slate-900 mb-2">¿Retirar del catálogo?</h1>
+    <p class="text-slate-500 mb-8 leading-relaxed">
+        Estás a punto de eliminar el libro <span class="font-bold text-slate-900">"{{ libro.titulo }}"</span>. 
+        Esta acción es definitiva y el registro desaparecerá de la base de datos.
+    </p>
+
+    <form method="post" class="flex flex-col sm:flex-row gap-3 justify-center">
+        {% csrf_token %}
+        <button type="submit" class="px-8 py-3 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700 shadow-lg shadow-rose-200 transition-all active:scale-95">
+            <i class="fas fa-trash-alt mr-2"></i> Confirmar Eliminación
+        </button>
+        <a href="{% url 'lista_libros' %}" class="px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all">
+            Mantener Libro
+        </a>
+    </form>
+</div>
+{% endblock %}
