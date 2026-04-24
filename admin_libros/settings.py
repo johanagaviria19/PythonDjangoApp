@@ -50,19 +50,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'admin_libros.wsgi.application'
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
-
-# Si estamos en Vercel y no hay DATABASE_URL, usamos SQLite en /tmp para evitar errores de escritura
-if 'VERCEL' in os.environ and not os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/db.sqlite3',
+# Configuración de Base de Datos
+# Prioridad: 1. DATABASE_URL (Postgres/MySQL) | 2. SQLite en /tmp (si es Vercel) | 3. SQLite local
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, conn_health_checks=True)
+    }
+elif os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/tmp/db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 AUTH_PASSWORD_VALIDATORS = [
